@@ -5,6 +5,7 @@ import java.util.List;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
+import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
 
@@ -12,6 +13,26 @@ import com.dummy.myerp.technical.exception.NotFoundException;
  * Interface de DAO des objets du package Comptabilite
  */
 public interface ComptabiliteDao {
+ /**
+  *
+  * @param sequenceEcritureComptable
+  */
+   void insertSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable );
+
+ /**
+  *
+  * @param sequenceEcritureComptable
+  */
+ void updateSequenceEcritureComtpable(SequenceEcritureComptable sequenceEcritureComptable);
+
+ /**
+  *
+  * @param pJournalCode
+  * @param pAnnee
+  * @return
+  * @throws NotFoundException
+  */
+   SequenceEcritureComptable getSequenceEcritureComptable(String pJournalCode,Integer pAnnee)throws NotFoundException;
 
     /**
      * Renvoie la liste des Comptes Comptables

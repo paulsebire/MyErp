@@ -1,20 +1,19 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import com.dummy.myerp.model.bean.comptabilite.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.TransactionStatus;
 import com.dummy.myerp.business.contrat.manager.ComptabiliteManager;
 import com.dummy.myerp.business.impl.AbstractBusinessManager;
-import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
-import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
-import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
-import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
@@ -33,6 +32,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      */
     public ComptabiliteManagerImpl() {
     }
+
+
 
 
     // ==================== Getters/Setters ====================
@@ -55,6 +56,23 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         return getDaoProxy().getComptabiliteDao().getListEcritureComptable();
     }
 
+
+
+    @Override
+    public SequenceEcritureComptable getSequenceEcritureComptable(String pJournalCode, Integer pAnnee) throws NotFoundException {
+        return getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(pJournalCode, pAnnee );
+    }
+
+    @Override
+    public void insertSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable) {
+        getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable( sequenceEcritureComptable );
+    }
+
+    @Override
+    public void updateSequenceEcritureComtpable(SequenceEcritureComptable sequenceEcritureComptable) {
+        getDaoProxy().getComptabiliteDao().updateSequenceEcritureComtpable( sequenceEcritureComptable);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -74,8 +92,53 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 4.  Enregistrer (insert/update) la valeur de la séquence en persitance
                     (table sequence_ecriture_comptable)
          */
+        Date date = pEcritureComptable.getDate();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        String journalCode = pEcritureComptable.getJournal().getCode();
+        Integer annee = calendar.get(Calendar.YEAR );
+        /* 2 */
+        Integer lastValueSequence = 1;
+
+        try {
+            /* 1 */
+            SequenceEcritureComptable sequenceEcritureComptable = getSequenceEcritureComptable(journalCode,  annee);
+
+            /* 2 */
+            lastValueSequence = lastValueSequence + sequenceEcritureComptable.getDerniereValeur() ;
+
+            /* 4 - update */
+            sequenceEcritureComptable.setDerniereValeur( lastValueSequence );
+            updateSequenceEcritureComtpable( sequenceEcritureComptable );
+        }catch (NotFoundException nf) {
+            /* 4 - insert */
+            insertSequenceEcritureComptable(new SequenceEcritureComptable(journalCode,annee,lastValueSequence ) );
+        }
+
+        /* 3 */
+        try {
+            pEcritureComptable.setReference( setReference( journalCode,annee,lastValueSequence ) );
+            updateEcritureComptable( pEcritureComptable );
+        }catch (FunctionalException fe ){
+            fe.printStackTrace();
+        }
     }
 
+    /**
+     * RG_Compta_5
+     * @param journalCode
+     * @param annee
+     * @param lastValueSequence
+     * @return
+     */
+    private String setReference(String journalCode,Integer annee, Integer lastValueSequence){
+        String reference = journalCode + "-";
+        reference += String.valueOf( annee ) + "/";
+        reference +=String.format("%05d", lastValueSequence );
+
+        return  reference;
+    }
     /**
      * {@inheritDoc}
      */

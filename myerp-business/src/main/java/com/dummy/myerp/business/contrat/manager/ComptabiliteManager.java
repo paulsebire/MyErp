@@ -5,13 +5,37 @@ import java.util.List;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
+import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
+import com.dummy.myerp.technical.exception.NotFoundException;
 
 
 /**
  * Interface du manager du package comptabilite.
  */
 public interface ComptabiliteManager {
+
+    /**
+     *
+     * @param sequenceEcritureComptable
+     */
+    void insertSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable );
+
+    /**
+     *
+     * @param sequenceEcritureComptable
+     */
+    void updateSequenceEcritureComtpable(SequenceEcritureComptable sequenceEcritureComptable);
+
+    /**
+     * Renvoie la sequence d'écriture comptable
+     * @param pJournalCode Code du journal qu'on recherche
+     * @param pAnnee Annee de la sequence recherché
+     * @return {@link SequenceEcritureComptable}
+     * @throws NotFoundException
+     */
+    SequenceEcritureComptable getSequenceEcritureComptable(String pJournalCode, Integer pAnnee)throws NotFoundException;
+
 
     /**
      * Renvoie la liste des comptes comptables.
@@ -35,6 +59,7 @@ public interface ComptabiliteManager {
      * @return {@link List}
      */
     List<EcritureComptable> getListEcritureComptable();
+
 
     /**
      * Ajoute une référence à l'écriture comptable.

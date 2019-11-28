@@ -1,14 +1,15 @@
-package com.dummy.myerp.testbusiness.business;
+package com.dummy.myerp.tests.business;
 
 
 import com.dummy.myerp.business.contrat.BusinessProxy;
 import com.dummy.myerp.business.impl.TransactionManager;
+import lombok.Data;
 
 
 /**
  * Classe mère des classes de test d'intégration de la couche Business
  */
-public abstract class BusinessTestCase {
+public abstract @Data class BusinessTestCase {
 
     static {
         SpringRegistry.init();
@@ -19,21 +20,4 @@ public abstract class BusinessTestCase {
     /** {@link TransactionManager} */
     private static final TransactionManager TRANSACTION_MANAGER = SpringRegistry.getTransactionManager();
 
-
-    // ==================== Constructeurs ====================
-    /**
-     * Constructeur.
-     */
-    public BusinessTestCase() {
-    }
-
-
-    // ==================== Getters/Setters ====================
-    public static BusinessProxy getBusinessProxy() {
-        return BUSINESS_PROXY;
-    }
-
-    public static TransactionManager getTransactionManager() {
-        return TRANSACTION_MANAGER;
-    }
 }

@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 public @Data class SequenceEcritureComptable {
 
     // ==================== Attributs ====================
+    @NonNull
+    private String journalCode;
+
     /** L'année */
     @NonNull
     private Integer annee;

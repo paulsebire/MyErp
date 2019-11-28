@@ -3,6 +3,7 @@ package com.dummy.myerp.business.impl.manager;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.junit.Assert;
 import org.junit.Test;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
@@ -15,41 +16,39 @@ public class ComptabiliteManagerImplTest {
 
     private ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
 
-/*
+
+
     @Test
     public void checkEcritureComptableUnit() throws Exception {
-        EcritureComptable vEcritureComptable;
-        vEcritureComptable = new EcritureComptable();
+        EcritureComptable vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                                                                                 null, new BigDecimal(123),
-                                                                                 null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                                                                                 null, null,
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1,"Compte  1"),
+                                                                                 "Ecriture 1", new BigDecimal(123),
+                BigDecimal.ZERO));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2,"Compte 2"),
+                                                                                 "Ecriture 2", BigDecimal.ZERO,
                                                                                  new BigDecimal(123)));
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitViolation() throws Exception {
-        EcritureComptable vEcritureComptable;
-        vEcritureComptable = new EcritureComptable();
+        EcritureComptable vEcritureComptable = new EcritureComptable();
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
 
     @Test(expected = FunctionalException.class)
     public void checkEcritureComptableUnitRG2() throws Exception {
-        EcritureComptable vEcritureComptable;
-        vEcritureComptable = new EcritureComptable();
+        EcritureComptable vEcritureComptable = new EcritureComptable();
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1,"Compte 1"),
                                                                                  null, new BigDecimal(123),
                                                                                  null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2,"Compte 2"),
                                                                                  null, null,
                                                                                  new BigDecimal(1234)));
         manager.checkEcritureComptableUnit(vEcritureComptable);
@@ -62,13 +61,13 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle("Libelle");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1,"Compte 1"),
                                                                                  null, new BigDecimal(123),
                                                                                  null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1,"Compte 2"),
                                                                                  null, new BigDecimal(123),
                                                                                  null));
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
-*/
+
 }
