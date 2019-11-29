@@ -13,7 +13,7 @@ import com.dummy.myerp.technical.exception.FunctionalException;
 
 
 public class ComptabiliteManagerImplTest {
-
+/*
     private ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
 
 
@@ -69,5 +69,5 @@ public class ComptabiliteManagerImplTest {
                                                                                  null));
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
-
+*/
 }
