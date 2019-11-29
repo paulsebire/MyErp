@@ -77,6 +77,7 @@ public @Data class EcritureComptable {
     }
 
     /**
+     * RG_Compta_2 : Pour qu'une écriture comptable soit valide, elle doit être équilibrée
      * Renvoie si l'écriture est équilibrée (TotalDebit = TotalCrédit)
      * @return boolean
      */

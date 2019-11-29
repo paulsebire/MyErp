@@ -1,4 +1,4 @@
-package com.dummy.myerp.tests.business;
+package com.dummy.myerp.business;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

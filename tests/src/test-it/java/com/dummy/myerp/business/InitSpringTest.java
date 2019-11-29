@@ -1,7 +1,5 @@
 package com.dummy.myerp.business;
 
-import com.dummy.myerp.tests.business.BusinessTestCase;
-import com.dummy.myerp.tests.business.SpringRegistry;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
