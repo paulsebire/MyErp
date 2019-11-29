@@ -51,6 +51,9 @@ public abstract class AbstractBusinessManager {
         return businessProxy;
     }
 
+    public static void setBusinessProxy(BusinessProxy businessProxy) {
+        AbstractBusinessManager.businessProxy = businessProxy;
+    }
 
     /**
      * Renvoie le Proxy d'accès à la couche Consumer-DAO
@@ -61,6 +64,9 @@ public abstract class AbstractBusinessManager {
         return daoProxy;
     }
 
+    public static void setDaoProxy(DaoProxy daoProxy) {
+        AbstractBusinessManager.daoProxy = daoProxy;
+    }
 
     /**
      * Renvoie le gestionnaire de Transaction
@@ -71,6 +77,9 @@ public abstract class AbstractBusinessManager {
         return transactionManager;
     }
 
+    public static void setTransactionManager(TransactionManager transactionManager) {
+        AbstractBusinessManager.transactionManager = transactionManager;
+    }
 
     /**
      * Renvoie un {@link Validator} de contraintes

@@ -7,10 +7,15 @@ import com.dummy.myerp.model.bean.comptabilite.*;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 import com.dummy.myerp.technical.exception.FunctionalException;
+import org.junit.rules.ExpectedException;
 
 public class ComptabiliteManagerImplTest {
+
+    @Rule
+    public ExpectedException thrown= ExpectedException.none();
 
     private ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
 
@@ -24,12 +29,7 @@ public class ComptabiliteManagerImplTest {
                 vDebit, vCredit);
         return vRetour;
     }
-/*
-    @Test
-    public void addReference(){
 
-    }
-*/
     @Test
     public void setReference(){
         SequenceEcritureComptable sequenceEcritureComptable = new SequenceEcritureComptable("AL",2019,1);
@@ -42,67 +42,8 @@ public class ComptabiliteManagerImplTest {
         Assert.assertNotEquals("AL-2019/00001",manager.setReference( sequenceEcritureComptable ) );
     }
 
-    @Test(expected = FunctionalException.class)
-    public void checkEcritureComptableUnit() throws Exception {
-        EcritureComptable vEcritureComptable = new EcritureComptable();
-        manager.checkEcritureComptableUnit(vEcritureComptable);
-    }
-
-    @Test(expected = FunctionalException.class)
-    public void checkConstraintValid() throws Exception {
-        EcritureComptable ecritureComptable = new EcritureComptable();
-        manager.checkConstraintValid( ecritureComptable );
-    }
-
-    @Test(expected = FunctionalException.class)
-    public void isEquilibree() throws Exception{
-        EcritureComptable vEcriture;
-        vEcriture = new EcritureComptable();
-
-        vEcriture.setLibelle("Non équilibrée");
-        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "10", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "20", "1"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2,"Compte 2", null, "30"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2","1", "2"));
-        manager.isEquilibree( vEcriture );
-    }
-
-    @Test(expected = FunctionalException.class)
-    public void isNumberValidEcritureComptable()throws Exception{
-        EcritureComptable vEcriture;
-        vEcriture = new EcritureComptable();
-
-        vEcriture.getListLigneEcriture().clear();
-        vEcriture.setLibelle("Nombre écriture non valide : 1 seule ligne de débit");
-        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "10", null));
-         manager.isNumberValidEcritureComptable( vEcriture );
-
-        vEcriture.getListLigneEcriture().clear();
-        vEcriture.setLibelle("Nombre écriture non valide : 1 seule ligne de crédit");
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2",null, "301"));
-         manager.isNumberValidEcritureComptable( vEcriture );
-
-        vEcriture.getListLigneEcriture().clear();
-        vEcriture.setLibelle("Nombre écriture non valide : 1 seule ligne de débit/crédit ");
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2","40", "7"));
-         manager.isNumberValidEcritureComptable( vEcriture );
-
-        vEcriture.getListLigneEcriture().clear();
-        vEcriture.setLibelle("Nombre écriture non valide : 2  lignes de débit");
-        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "10", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "101", null));
-         manager.isNumberValidEcritureComptable( vEcriture );
-
-        vEcriture.getListLigneEcriture().clear();
-        vEcriture.setLibelle("Nombre écriture non valide : 2 lignes de crédit");
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2",null, "301"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2",null, "30"));
-        manager.isNumberValidEcritureComptable( vEcriture );
-    }
-
     @Test
     public void isAmountExist(){
-
         Assert.assertTrue(manager.isAmountExist( new BigDecimal("1") ));
         Assert.assertTrue(manager.isAmountExist( new BigDecimal("-1") ));
         Assert.assertTrue(manager.isAmountExist( new BigDecimal("1.1") ));
@@ -114,6 +55,86 @@ public class ComptabiliteManagerImplTest {
         Assert.assertFalse(manager.isAmountExist( null ) );
 
     }
+
+    @Test
+    public void checkEcritureComptable() throws FunctionalException {
+        EcritureComptable vEcritureComptable = new EcritureComptable();
+        thrown.expect(FunctionalException.class);
+        manager.checkEcritureComptable(vEcritureComptable);
+
+    }
+
+
+    @Test
+    public void checkEcritureComptableUnit() throws FunctionalException {
+
+        EcritureComptable pEcritureComptable = new EcritureComptable();
+        thrown.expect(FunctionalException.class);
+
+
+        manager.checkEcritureComptableUnit(pEcritureComptable);
+    }
+
+    @Test
+    public void checkConstraintValid() throws FunctionalException {
+        EcritureComptable ecritureComptable = new EcritureComptable();
+        thrown.expect(FunctionalException.class);
+        manager.checkConstraintValid( ecritureComptable );
+    }
+
+    @Test
+    public void isEquilibree() throws FunctionalException{
+        EcritureComptable vEcriture;
+        vEcriture = new EcritureComptable();
+
+        vEcriture.setLibelle("Non équilibrée");
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "10", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "20", "1"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2,"Compte 2", null, "30"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2","1", "2"));
+        thrown.expect(FunctionalException.class);
+        manager.isEquilibree( vEcriture );
+    }
+
+    @Test
+    public void isNumberValidEcritureComptable()throws FunctionalException{
+        EcritureComptable vEcriture;
+        vEcriture = new EcritureComptable();
+
+        vEcriture.getListLigneEcriture().clear();
+        vEcriture.setLibelle("Nombre écriture non valide : 1 seule ligne de débit");
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "10", null));
+        thrown.expect(FunctionalException.class);
+        manager.isNumberValidEcritureComptable( vEcriture );
+
+        vEcriture.getListLigneEcriture().clear();
+        vEcriture.setLibelle("Nombre écriture non valide : 1 seule ligne de crédit");
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2",null, "301"));
+        thrown.expect(FunctionalException.class);
+        manager.isNumberValidEcritureComptable( vEcriture );
+
+        vEcriture.getListLigneEcriture().clear();
+        vEcriture.setLibelle("Nombre écriture non valide : 1 seule ligne de débit/crédit ");
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2","40", "7"));
+        thrown.expect(FunctionalException.class);
+        manager.isNumberValidEcritureComptable( vEcriture );
+
+        vEcriture.getListLigneEcriture().clear();
+        vEcriture.setLibelle("Nombre écriture non valide : 2  lignes de débit");
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "10", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "101", null));
+        thrown.expect(FunctionalException.class);
+        manager.isNumberValidEcritureComptable( vEcriture );
+
+        vEcriture.getListLigneEcriture().clear();
+        vEcriture.setLibelle("Nombre écriture non valide : 2 lignes de crédit");
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2",null, "301"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2",null, "30"));
+        thrown.expect(FunctionalException.class);
+        manager.isNumberValidEcritureComptable( vEcriture );
+    }
+
+
 
 
 
