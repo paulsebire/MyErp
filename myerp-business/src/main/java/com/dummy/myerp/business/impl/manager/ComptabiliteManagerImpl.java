@@ -133,7 +133,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         this.checkConstraintValid (pEcritureComptable ) ;
 
         // ===== RG_Compta_2
-        this.isEquilibree( pEcritureComptable ) ;
+        if (!isEquilibree( pEcritureComptable ) )throw new FunctionalException("L'écriture comptable n'est pas équilibrée.");
 
         // ===== RG_Compta_3
         this.isNumberValidEcritureComptable( pEcritureComptable);
@@ -163,8 +163,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * @return
      * @throws FunctionalException
      */
-    public void isEquilibree( EcritureComptable pEcritureComptable) throws FunctionalException {
-        if (!pEcritureComptable.isEquilibree() ) throw new FunctionalException("L'écriture comptable n'est pas équilibrée.");
+    public boolean isEquilibree( EcritureComptable pEcritureComptable)  {
+       return   ( pEcritureComptable.isEquilibree() );
     }
 
     /**

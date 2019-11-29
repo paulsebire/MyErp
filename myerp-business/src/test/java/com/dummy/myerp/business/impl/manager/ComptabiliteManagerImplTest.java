@@ -57,6 +57,29 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test
+    public void isEquilibree() {
+        EcritureComptable vEcriture;
+        vEcriture = new EcritureComptable();
+
+        vEcriture.setLibelle("Equilibrée");
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "Compte 1","200.50", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "Compte 1","100.50", "33"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2",null, "301"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2","40", "7"));
+        Assert.assertTrue(manager.isEquilibree(vEcriture));
+
+        vEcriture.getListLigneEcriture().clear();
+        vEcriture.setLibelle("Non équilibrée");
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "10", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "20", "1"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2,"Compte 2", null, "30"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2","1", "2"));
+        Assert.assertFalse( manager.isEquilibree(vEcriture));
+    }
+
+
+
+    @Test
     public void checkEcritureComptable() throws FunctionalException {
         EcritureComptable vEcritureComptable = new EcritureComptable();
         thrown.expect(FunctionalException.class);
@@ -82,19 +105,7 @@ public class ComptabiliteManagerImplTest {
         manager.checkConstraintValid( ecritureComptable );
     }
 
-    @Test
-    public void isEquilibree() throws FunctionalException{
-        EcritureComptable vEcriture;
-        vEcriture = new EcritureComptable();
 
-        vEcriture.setLibelle("Non équilibrée");
-        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "10", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Compte 1", "20", "1"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2,"Compte 2", null, "30"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2","1", "2"));
-        thrown.expect(FunctionalException.class);
-        manager.isEquilibree( vEcriture );
-    }
 
     @Test
     public void isNumberValidEcritureComptable()throws FunctionalException{
