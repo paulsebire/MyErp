@@ -86,23 +86,7 @@ public class ComptabiliteManagerImplTest {
 
     }
 
-    /**
-     * isequilibre
-     * @throws FunctionalException
-     */
-    @Test(expected = FunctionalException.class )
-    public void checkEcritureComptable_isnotequilibree() throws FunctionalException {
-        EcritureComptable vEcriture;
-        vEcriture = new EcritureComptable();
 
-        vEcriture.setLibelle("Non equilibre");
-        vEcriture.getListLigneEcriture().add(this.createLigne(1, "Compte 1","200.50", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(1, "Compte 1","100.50", "33"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2",null, "301"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Compte 2","40", "7"));
-
-
-    }
 
 
     @Test
