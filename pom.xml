@@ -70,7 +70,6 @@
         <module>myerp-model</module>
         <module>myerp-consumer</module>
         <module>myerp-business</module>
-        <module>tests</module>
     </modules>
 
 
@@ -338,7 +337,6 @@
         <pluginManagement>
             <plugins>
                 <!-- ===== Sonar jacoco : Test Unit && Itégration === -->
-
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
@@ -465,12 +463,8 @@
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>1.10</version>
                 </plugin>
-
-
-
         </plugins>
         </pluginManagement>
-
     </build>
 
 
