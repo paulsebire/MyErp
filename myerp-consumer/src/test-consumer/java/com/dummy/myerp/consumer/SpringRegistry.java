@@ -1,7 +1,6 @@
-package com.dummy.myerp.business;
+package com.dummy.myerp.consumer;
 
-import com.dummy.myerp.business.contrat.BusinessProxy;
-import com.dummy.myerp.business.impl.TransactionManager;
+
 import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,26 +73,9 @@ public final class SpringRegistry {
         SpringRegistry.LOGGER.debug("[FIN] SpringRegistry.getBean() - Bean ID : " + pBeanId);
         return vBean;
     }
-
     public static DaoProxy getDaoProxy() {
         return (DaoProxy) SpringRegistry.getBean("DaoProxy");
     }
-    /**
-     * Renvoie l'instance de {@link BusinessProxy} de l'application
-     *
-     * @return {@link BusinessProxy}
-     */
-    public static BusinessProxy getBusinessProxy() {
-        return (BusinessProxy) SpringRegistry.getBean("BusinessProxy");
-    }
 
 
-    /**
-     * Renvoie l'instance de {@link TransactionManager} de l'application
-     *
-     * @return {@link TransactionManager}
-     */
-    public static TransactionManager getTransactionManager() {
-        return (TransactionManager) SpringRegistry.getBean("TransactionManager");
-    }
 }

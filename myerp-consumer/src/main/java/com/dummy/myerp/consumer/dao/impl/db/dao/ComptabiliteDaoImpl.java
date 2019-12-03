@@ -86,7 +86,8 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         SQLupdateSequenceEcritureComtpable = pSQLupdateSequenceEcritureComtpable;
     }
 
-    public void updateSequenceEcritureComtpable(SequenceEcritureComptable sequenceEcritureComptable){
+    @Override
+    public void updateSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable){
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue("journal_code",sequenceEcritureComptable.getJournalCode() );
@@ -122,9 +123,11 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         vSqlParams.addValue("journal_code", pJournalComptable.getCode() );
 
         SequenceEcritureComptableRM vRM = new SequenceEcritureComptableRM();
+
         List<SequenceEcritureComptable> vList = vJdbcTemplate.query(SQLloadSequenceEcritureComptable, vSqlParams, vRM);
         pJournalComptable.getListSequenceEcritureComptable().clear();
         pJournalComptable.getListSequenceEcritureComptable().addAll(vList);
+
     }
 
     // ==================== ComptableComptable - GET ====================

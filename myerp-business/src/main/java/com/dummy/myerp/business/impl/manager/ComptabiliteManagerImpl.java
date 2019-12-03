@@ -62,7 +62,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
     @Override
     public void updateSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable) {
-        getDaoProxy().getComptabiliteDao().updateSequenceEcritureComtpable( sequenceEcritureComptable);
+        getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable( sequenceEcritureComptable);
     }
 
     @Override

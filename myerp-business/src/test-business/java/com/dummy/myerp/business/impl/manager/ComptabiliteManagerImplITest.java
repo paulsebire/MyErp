@@ -28,6 +28,7 @@ public class ComptabiliteManagerImplITest {
     private EcritureComptable vEcriture ;
     private ComptabiliteDaoImpl dao = ComptabiliteDaoImpl.getInstance();
     private TransactionManager trManager = TransactionManager.getInstance();
+
     private Calendar calendar = Calendar.getInstance();
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     private Date dateAddReference;
@@ -48,11 +49,13 @@ public class ComptabiliteManagerImplITest {
     @Before
     public void initAll() throws ParseException {
         SpringRegistry.init();
+        ComptabiliteManagerImpl.setTransactionManager(SpringRegistry.getTransactionManager());
+        ComptabiliteManagerImpl.setDaoProxy(SpringRegistry.getDaoProxy());
+        ComptabiliteManagerImpl.setBusinessProxy(SpringRegistry.getBusinessProxy());
+
         dateAddReference = formatter.parse("1900-01-01");
         dateRG6 = formatter.parse("2016-01-01");
         vEcriture = manager.getEcritureComptable();
-
-
 
     }
 

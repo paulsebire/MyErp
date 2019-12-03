@@ -31,7 +31,7 @@ public interface ComptabiliteDao {
       *
       * @param sequenceEcritureComptable
       */
-     void updateSequenceEcritureComtpable(SequenceEcritureComptable sequenceEcritureComptable);
+     void updateSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
 
     /**
      *

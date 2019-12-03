@@ -11,6 +11,8 @@ import org.junit.Test;
 
 public class EcritureComptableTest {
 
+
+
     private LigneEcritureComptable createLigne(Integer pCompteComptableNumero,String pComteComptableLibelle, String pDebit, String pCredit) {
         BigDecimal vDebit = pDebit == null ?  BigDecimal.ZERO : new BigDecimal(pDebit);
         BigDecimal vCredit = pCredit == null ? BigDecimal.ZERO : new BigDecimal(pCredit);

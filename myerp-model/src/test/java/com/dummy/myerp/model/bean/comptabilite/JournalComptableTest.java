@@ -10,6 +10,7 @@ import java.util.List;
 
 public class JournalComptableTest {
 
+    private  SequenceEcritureComptable sequenceEcritureComptable = new SequenceEcritureComptable();
 
     @Test
     public void getByCode() {
