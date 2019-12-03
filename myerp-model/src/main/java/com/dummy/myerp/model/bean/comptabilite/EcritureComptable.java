@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 /**
  * Bean représentant une Écriture Comptable
@@ -25,15 +26,20 @@ public @Data class EcritureComptable {
     private Integer id;
 
     /** Journal comptable */
-    @NotNull private JournalComptable journal;
+    @NonNull
+    private JournalComptable journal;
+
     /** The Reference. */
-    @Pattern(regexp = "\\d{1,5}-\\d{4}/\\d{5}")
+   // @Pattern(regexp = "\\d{1,5}-\\d{4}/\\d{5}")
+    @Pattern(regexp = "[A-Z]{2}-[0-9]{4}/[0-9]{5}")
     private String reference;
+
     /** The Date. */
-    @NotNull private Date date;
+    @NonNull
+    private Date date;
 
     /** The Libelle. */
-    @NotNull
+    @NonNull
     @Size(min = 1, max = 200)
     private String libelle;
 

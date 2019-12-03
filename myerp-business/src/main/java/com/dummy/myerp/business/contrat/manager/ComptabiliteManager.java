@@ -15,6 +15,8 @@ import com.dummy.myerp.technical.exception.NotFoundException;
  */
 public interface ComptabiliteManager {
 
+    SequenceEcritureComptable getSequenceEcritureComptable(String pJournalCode, Integer pAnnee);
+
     /**
      *
      * @param sequenceEcritureComptable
@@ -25,16 +27,7 @@ public interface ComptabiliteManager {
      *
      * @param sequenceEcritureComptable
      */
-    void updateSequenceEcritureComtpable(SequenceEcritureComptable sequenceEcritureComptable);
-
-    /**
-     * Renvoie la sequence d'écriture comptable
-     * @param pJournalCode Code du journal qu'on recherche
-     * @param pAnnee Annee de la sequence recherché
-     * @return {@link SequenceEcritureComptable}
-     * @throws NotFoundException
-     */
-    SequenceEcritureComptable getSequenceEcritureComptable(String pJournalCode, Integer pAnnee)throws NotFoundException;
+    void updateSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
 
 
     /**
@@ -73,9 +66,10 @@ public interface ComptabiliteManager {
      * <pre>BQ-2016/00001</pre>
      *
      * <p><strong>Attention :</strong> l'écriture n'est pas enregistrée en persistance</p>
-     * @param pEcritureComptable L'écriture comptable concernée
+     *
+     *
      */
-    void addReference(EcritureComptable pEcritureComptable);
+    void addReference() throws FunctionalException;
 
     /**
      * Vérifie que l'Ecriture comptable respecte les règles de gestion.

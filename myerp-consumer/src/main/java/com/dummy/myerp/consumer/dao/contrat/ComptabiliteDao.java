@@ -13,27 +13,34 @@ import com.dummy.myerp.technical.exception.NotFoundException;
  * Interface de DAO des objets du package Comptabilite
  */
 public interface ComptabiliteDao {
- /**
-  *
-  * @param sequenceEcritureComptable
-  */
-   void insertSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable );
+    /**
+     *
+     * @param pJournalCode
+     * @param pAnnee
+     * @return
+     */
+    SequenceEcritureComptable getSequenceEcritureComptable(String pJournalCode, Integer pAnnee);
 
- /**
-  *
-  * @param sequenceEcritureComptable
-  */
- void updateSequenceEcritureComtpable(SequenceEcritureComptable sequenceEcritureComptable);
+     /**
+      *
+      * @param sequenceEcritureComptable
+      */
+       void insertSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable );
 
- /**
-  *
-  * @param pJournalCode
-  * @param pAnnee
-  * @return
-  * @throws NotFoundException
-  */
-   SequenceEcritureComptable getSequenceEcritureComptable(String pJournalCode,Integer pAnnee)throws NotFoundException;
+     /**
+      *
+      * @param sequenceEcritureComptable
+      */
+     void updateSequenceEcritureComtpable(SequenceEcritureComptable sequenceEcritureComptable);
 
+    /**
+     *
+     * @param sequenceEcritureComptable
+     */
+     void deleteSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
+
+
+    void loadSequenceEcritureComptable(JournalComptable pJournalComptable);
     /**
      * Renvoie la liste des Comptes Comptables
      * @return {@link List}
@@ -63,7 +70,7 @@ public interface ComptabiliteDao {
      * @return {@link EcritureComptable}
      * @throws NotFoundException : Si l'écriture comptable n'est pas trouvée
      */
-    EcritureComptable getEcritureComptable(Integer pId) throws NotFoundException;
+    EcritureComptable getEcritureComptable(Integer pId) ;
 
     /**
      * Renvoie l'Écriture Comptable de référence {@code pRef}.

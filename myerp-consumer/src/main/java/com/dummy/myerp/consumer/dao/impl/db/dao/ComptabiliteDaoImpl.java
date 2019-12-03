@@ -50,7 +50,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         SQLgetSequenceEcritureComptable = pSQLgetSequenceEcritureComptable;
     }
 
-   public SequenceEcritureComptable getSequenceEcritureComptable(String pJournalCode, Integer pAnnee)throws NotFoundException{
+   public SequenceEcritureComptable getSequenceEcritureComptable(String pJournalCode, Integer pAnnee){
        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
        MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
        vSqlParams.addValue("journal_code", pJournalCode);
@@ -61,7 +61,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
        try {
            vBean = vJdbcTemplate.queryForObject(SQLgetSequenceEcritureComptable, vSqlParams, vRM);
        } catch (EmptyResultDataAccessException vEx) {
-           throw new NotFoundException("SequenceEcritureComptable non trouvée : journal_code=" + pJournalCode);
+           return null;
        }
        return vBean;
    }
@@ -93,6 +93,38 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         vSqlParams.addValue("annee",sequenceEcritureComptable.getAnnee() );
         vSqlParams.addValue("derniere_valeur",sequenceEcritureComptable.getDerniereValeur() );
         vJdbcTemplate.update(SQLupdateSequenceEcritureComtpable, vSqlParams);
+    }
+    // ==================== SequenceEcritureComptable - DELETE ====================
+    private static String SQLdeleteSequenceEcritureComptable;
+    public void setSQLdeleteSequenceEcritureComptable(String pSQLdeleteSequenceEcritureComptable) {
+        SQLdeleteSequenceEcritureComptable = pSQLdeleteSequenceEcritureComptable;
+    }
+    @Override
+    public void deleteSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable) {
+
+        // ===== Suppression de l'écriture
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
+        vSqlParams.addValue("journal_code", sequenceEcritureComptable.getJournalCode());
+        vSqlParams.addValue("annee", sequenceEcritureComptable.getAnnee());
+        vJdbcTemplate.update(SQLdeleteSequenceEcritureComptable, vSqlParams);
+    }
+    // ==================== SequenceEcritureComptable - LOAD List ====================
+    /** SQLloadSequenceEcritureComptable */
+    private static String SQLloadSequenceEcritureComptable;
+    public void setSQLloadSequenceEcritureComptable(String pSQLloadSequenceEcritureComptable) {
+        SQLloadSequenceEcritureComptable = pSQLloadSequenceEcritureComptable;
+    }
+    @Override
+    public void loadSequenceEcritureComptable(JournalComptable pJournalComptable) {
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
+        vSqlParams.addValue("journal_code", pJournalComptable.getCode() );
+
+        SequenceEcritureComptableRM vRM = new SequenceEcritureComptableRM();
+        List<SequenceEcritureComptable> vList = vJdbcTemplate.query(SQLloadSequenceEcritureComptable, vSqlParams, vRM);
+        pJournalComptable.getListSequenceEcritureComptable().clear();
+        pJournalComptable.getListSequenceEcritureComptable().addAll(vList);
     }
 
     // ==================== ComptableComptable - GET ====================
@@ -145,7 +177,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         SQLgetEcritureComptable = pSQLgetEcritureComptable;
     }
     @Override
-    public EcritureComptable getEcritureComptable(Integer pId) throws NotFoundException {
+    public EcritureComptable getEcritureComptable(Integer pId)  {
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue("id", pId);
@@ -154,7 +186,8 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         try {
             vBean = vJdbcTemplate.queryForObject(SQLgetEcritureComptable, vSqlParams, vRM);
         } catch (EmptyResultDataAccessException vEx) {
-            throw new NotFoundException("EcritureComptable non trouvée : id=" + pId);
+            return null;
+
         }
         return vBean;
     }

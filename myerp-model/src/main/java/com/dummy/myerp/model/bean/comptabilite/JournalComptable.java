@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.Size;
@@ -27,6 +28,8 @@ public @Data class JournalComptable {
     @NonNull
     @Size(min = 1, max = 150)
     private String libelle;
+
+    private final List<SequenceEcritureComptable> listSequenceEcritureComptable  = new ArrayList<>();
 
 
 

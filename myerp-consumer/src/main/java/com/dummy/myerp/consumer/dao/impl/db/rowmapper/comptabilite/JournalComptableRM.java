@@ -3,6 +3,7 @@ package com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.dummy.myerp.consumer.ConsumerHelper;
 import org.springframework.jdbc.core.RowMapper;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 
@@ -17,7 +18,7 @@ public class JournalComptableRM implements RowMapper<JournalComptable> {
         JournalComptable vBean = new JournalComptable();
         vBean.setCode(pRS.getString("code"));
         vBean.setLibelle(pRS.getString("libelle"));
-
+        ConsumerHelper.getDaoProxy().getComptabiliteDao().loadSequenceEcritureComptable( vBean );
         return vBean;
     }
 }

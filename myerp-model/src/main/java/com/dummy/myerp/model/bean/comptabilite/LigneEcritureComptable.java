@@ -1,7 +1,6 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
 import java.math.BigDecimal;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.dummy.myerp.model.validation.constraint.MontantComptable;
@@ -25,16 +24,29 @@ public @Data class LigneEcritureComptable {
 
     /** The Libelle. */
     @Size(max = 200)
-    @NonNull
     private String libelle;
 
     /** The Debit. */
     @MontantComptable
-    @NonNull
     private BigDecimal debit;
 
     /** The Credit. */
     @MontantComptable
-    @NonNull
     private BigDecimal credit;
+
+    /**
+     * Instantiates a new Ligne ecriture comptable.
+     *
+     * @param pCompteComptable the Compte Comptable
+     * @param pLibelle the libelle
+     * @param pDebit the debit
+     * @param pCredit the credit
+     */
+    public LigneEcritureComptable(CompteComptable pCompteComptable, String pLibelle,
+                                  BigDecimal pDebit, BigDecimal pCredit) {
+        compteComptable = pCompteComptable;
+        libelle = pLibelle;
+        debit = pDebit;
+        credit = pCredit;
+    }
 }
