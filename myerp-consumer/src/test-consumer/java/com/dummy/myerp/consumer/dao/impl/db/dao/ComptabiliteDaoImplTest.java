@@ -1,18 +1,15 @@
 package com.dummy.myerp.consumer.dao.impl.db.dao;
 
 import com.dummy.myerp.consumer.SpringRegistry;
-import com.dummy.myerp.consumer.dao.contrat.DaoProxy;
 import com.dummy.myerp.consumer.db.AbstractDbConsumer;
 import com.dummy.myerp.consumer.db.DataSourcesEnum;
 import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.NotFoundException;
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.ObjectUtils;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.postgresql.ds.PGPoolingDataSource;
-import org.postgresql.osgi.PGDataSourceFactory;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
@@ -43,11 +40,40 @@ public class ComptabiliteDaoImplTest {
 
     @Before
     public void init() {
-
         SpringRegistry.init();
-
         compteComptableList = dao.getListCompteComptable();
         journalComptableList = dao.getListJournalComptable();
+    }
+
+    @Test
+    public void isDataSourceConfig(){
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName("org.postgresql.Driver");
+        ds.setUrl("jdbc:postgresql://192.168.99.101:9032/db_myerp");
+        ds.setUsername("root");
+        ds.setPassword("root");
+
+        Map<DataSourcesEnum, DataSource> vMapDataSource = new HashMap<>(DataSourcesEnum.values().length);
+        vMapDataSource.put(DataSourcesEnum.MYERP,ds );
+
+        Assert.assertFalse( AbstractDbConsumer.isDataSourceConfig(ds,vMapDataSource,DataSourcesEnum.MYERP) );
+        Assert.assertTrue( AbstractDbConsumer.isDataSourceConfig(ds,vMapDataSource,null) );
+        Assert.assertTrue( AbstractDbConsumer.isDataSourceConfig(null,vMapDataSource,DataSourcesEnum.MYERP) );
+        Assert.assertTrue( AbstractDbConsumer.isDataSourceConfig(null,vMapDataSource,null) );
+
+    }
+    @Test(expected = UnsatisfiedLinkError.class )
+    public void isDataSourceIsNull()throws UnsatisfiedLinkError{
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName("org.postgresql.Driver");
+        ds.setUrl("jdbc:postgresql://192.168.99.101:9032/db_myerp");
+        ds.setUsername("root");
+        ds.setPassword("root");
+
+        Map<DataSourcesEnum, DataSource> vMapDataSource = new HashMap<>(DataSourcesEnum.values().length);
+        vMapDataSource.put(DataSourcesEnum.MYERP,ds );
+         AbstractDbConsumer.isDataSourceIsNull(ds,DataSourcesEnum.MYERP) ;
+         AbstractDbConsumer.isDataSourceIsNull(null,DataSourcesEnum.MYERP);
     }
 
 

@@ -55,9 +55,7 @@ public abstract class AbstractDbConsumer {
      */
     protected DataSource getDataSource(DataSourcesEnum pDataSourceId) {
         DataSource vRetour = this.mapDataSource.get(pDataSourceId);
-        if (vRetour == null) {
-            throw new UnsatisfiedLinkError("La DataSource suivante n'a pas été initialisée : " + pDataSourceId);
-        }
+        isDataSourceIsNull( vRetour, pDataSourceId );
         return vRetour;
     }
 
@@ -83,7 +81,6 @@ public abstract class AbstractDbConsumer {
         return vSeqValue;
     }
 
-
     // ==================== Méthodes Static ====================
     /**
      * Méthode de configuration de la classe
@@ -99,15 +96,24 @@ public abstract class AbstractDbConsumer {
             DataSource vDataSource = pMapDataSource.get(vDataSourceId);
             // On test si la DataSource est configurée
             // (NB : elle est considérée comme configurée si elle est dans pMapDataSource mais à null)
-            if (vDataSource == null ) {
-                if (!pMapDataSource.containsKey(vDataSourceId)) {
-                    LOGGER.error("La DataSource " + vDataSourceId + " n'a pas été initialisée !");
-                }
-            } else {
+            if (isDataSourceConfig(vDataSource, pMapDataSource, vDataSourceId) ) {
+                throw new IllegalStateException("La DataSource " + vDataSourceId + " n'a pas été initialisée !");
+            }else
                 vMapDataSource.put(vDataSourceId, vDataSource);
-            }
         }
         mapDataSource = vMapDataSource;
     }
 
+    public static void isDataSourceIsNull(DataSource vRetour,DataSourcesEnum pDataSourceId)throws UnsatisfiedLinkError{
+        if (vRetour == null) {
+            throw new UnsatisfiedLinkError("La DataSource suivante n'a pas été initialisée : " + pDataSourceId);
+        }
+    }
+
+    public static boolean isDataSourceConfig(DataSource vDataSource,Map<DataSourcesEnum, DataSource> pMapDataSource,DataSourcesEnum vDataSourceId){
+        if(vDataSource == null || !pMapDataSource.containsKey( vDataSourceId) )
+            return true;
+
+        return false;
+    }
 }
