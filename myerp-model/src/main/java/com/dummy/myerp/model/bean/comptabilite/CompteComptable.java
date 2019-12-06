@@ -1,13 +1,13 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -15,17 +15,38 @@ import javax.validation.constraints.Size;
  * Bean représentant un Compte Comptable
  */
 @NoArgsConstructor
-@RequiredArgsConstructor
-public @Data class CompteComptable {
+@Getter
+@ToString
+public class CompteComptable {
     // ==================== Attributs ====================
     /** The Numero. */
-    @NonNull
+    @NotNull
     private Integer numero;
 
     /** The Libelle. */
-    @NonNull
+    @NotNull
     @Size(min = 1, max = 150)
     private String libelle;
+
+    @Valid
+    private final List<LigneEcritureComptable> ligneEcritureComptableList = new ArrayList<>();
+
+    // ==================== Getter / Setter ====================
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    // ==================== Constructeur ====================
+
+    public CompteComptable(Integer numero, String libelle) {
+        this.numero = numero;
+        this.libelle = libelle;
+    }
+
 
     // ==================== Méthodes STATIC ====================
     /**

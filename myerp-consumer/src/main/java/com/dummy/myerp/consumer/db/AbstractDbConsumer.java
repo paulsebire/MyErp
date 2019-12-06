@@ -99,7 +99,7 @@ public abstract class AbstractDbConsumer {
             DataSource vDataSource = pMapDataSource.get(vDataSourceId);
             // On test si la DataSource est configurée
             // (NB : elle est considérée comme configurée si elle est dans pMapDataSource mais à null)
-            if (vDataSource == null) {
+            if (vDataSource == null ) {
                 if (!pMapDataSource.containsKey(vDataSourceId)) {
                     LOGGER.error("La DataSource " + vDataSourceId + " n'a pas été initialisée !");
                 }
@@ -109,4 +109,5 @@ public abstract class AbstractDbConsumer {
         }
         mapDataSource = vMapDataSource;
     }
+
 }

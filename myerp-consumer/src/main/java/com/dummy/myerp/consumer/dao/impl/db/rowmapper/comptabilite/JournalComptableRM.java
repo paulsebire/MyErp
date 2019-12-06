@@ -18,7 +18,8 @@ public class JournalComptableRM implements RowMapper<JournalComptable> {
         JournalComptable vBean = new JournalComptable();
         vBean.setCode(pRS.getString("code"));
         vBean.setLibelle(pRS.getString("libelle"));
-        ConsumerHelper.getDaoProxy().getComptabiliteDao().loadSequenceEcritureComptable( vBean );
+
         return vBean;
     }
+
 }

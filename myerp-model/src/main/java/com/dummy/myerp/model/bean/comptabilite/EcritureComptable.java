@@ -6,27 +6,28 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 /**
  * Bean représentant une Écriture Comptable
  */
 @NoArgsConstructor
-public @Data class EcritureComptable {
+@Getter
+@ToString
+public class EcritureComptable {
 
     // ==================== Attributs ====================
     /** The Id. */
     private Integer id;
 
     /** Journal comptable */
-    @NonNull
+    @NotNull
     private JournalComptable journal;
 
     /** The Reference. */
@@ -35,11 +36,11 @@ public @Data class EcritureComptable {
     private String reference;
 
     /** The Date. */
-    @NonNull
+    @NotNull
     private Date date;
 
     /** The Libelle. */
-    @NonNull
+    @NotNull
     @Size(min = 1, max = 200)
     private String libelle;
 
@@ -48,15 +49,33 @@ public @Data class EcritureComptable {
     @Size(min = 2)
     private final List<LigneEcritureComptable> listLigneEcriture = new ArrayList<>();
 
+    // ==================== Getter / Setter ====================
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
+    public void setJournal(JournalComptable journal) {
+        this.journal = journal;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
 
     /**
      * Calcul et renvoie le total des montants au débit des lignes d'écriture
      *
      * @return {@link BigDecimal}, {@link BigDecimal#ZERO} si aucun montant au débit
      */
-
     public BigDecimal getTotalDebit() {
         BigDecimal vRetour = BigDecimal.ZERO;
         for (LigneEcritureComptable vLigneEcritureComptable : listLigneEcriture) {
@@ -95,4 +114,27 @@ public @Data class EcritureComptable {
         return  (amount != null);
     }
 
+    // ==================== Méthodes STATIC ====================
+    /**
+     * Renvoie le {@link EcritureComptable} de code {@code pCode} s'il est présent dans la liste
+     *
+     * @param pList la liste où chercher le {@link EcritureComptable}
+     * @param pId le id de l'écriture du {@link EcritureComptable} à chercher
+     * @return {@link EcritureComptable} ou {@code null}
+     */
+    public static EcritureComptable getById(List<? extends EcritureComptable> pList, Integer pId) {
+        EcritureComptable vRetour = null;
+        for (EcritureComptable vBean : pList) {
+            if (isEcritureComptableExist( vBean,  pId )) {
+                vRetour = vBean;
+                break;
+            }
+        }
+        return vRetour;
+    }
+
+    public static boolean isEcritureComptableExist(EcritureComptable vBean, Integer pId ){
+
+        return (vBean != null && Objects.equals(vBean.getId(), pId));
+    }
 }

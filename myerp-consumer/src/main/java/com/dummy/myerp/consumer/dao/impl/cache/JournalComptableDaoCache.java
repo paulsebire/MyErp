@@ -17,8 +17,6 @@ public class JournalComptableDaoCache {
     /** The List compte comptable. */
     private List<JournalComptable> listJournalComptable;
 
-
-
     // ==================== Méthodes ====================
     /**
      * Gets by code.
@@ -27,11 +25,9 @@ public class JournalComptableDaoCache {
      * @return {@link JournalComptable} ou {@code null}
      */
     public JournalComptable getByCode(String pCode) {
-        if (listJournalComptable == null) {
+        if (listJournalComptable == null)
             listJournalComptable = ConsumerHelper.getDaoProxy().getComptabiliteDao().getListJournalComptable();
-        }
 
-        JournalComptable vRetour = JournalComptable.getByCode(listJournalComptable, pCode);
-        return vRetour;
+        return JournalComptable.getByCode(listJournalComptable, pCode);
     }
 }

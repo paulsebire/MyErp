@@ -1,13 +1,12 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -15,22 +14,39 @@ import javax.validation.constraints.Size;
  * Bean représentant un Journal Comptable
  */
 @NoArgsConstructor
-@RequiredArgsConstructor
-public @Data class JournalComptable {
+@Getter
+public class JournalComptable {
 
     // ==================== Attributs ====================
     /** code */
-    @NonNull
+    @NotNull
     @Size(min = 1, max = 5)
     private String code;
 
     /** libelle */
-    @NonNull
+    @NotNull
     @Size(min = 1, max = 150)
     private String libelle;
 
-    private final List<SequenceEcritureComptable> listSequenceEcritureComptable  = new ArrayList<>();
+    @Valid
+    private final List<SequenceEcritureComptable> listSequenceEcriture  = new ArrayList<>();
 
+    // ==================== Getter / Setter ====================
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+
+    // ==================== Constructeur ====================
+    public JournalComptable(String code, String libelle) {
+        this.code = code;
+        this.libelle = libelle;
+    }
 
 
     // ==================== Méthodes STATIC ====================
@@ -54,6 +70,6 @@ public @Data class JournalComptable {
 
     public static boolean isJournalComptableExist(JournalComptable vBean, String pCode ){
 
-        return (vBean != null && Objects.equals(vBean.getCode(), pCode));
+        return (vBean != null && Objects.equals(vBean.getCode(), pCode) );
     }
 }

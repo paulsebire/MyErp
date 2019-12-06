@@ -2,10 +2,7 @@ package com.dummy.myerp.consumer.dao.contrat;
 
 import java.util.List;
 
-import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
-import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
-import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
-import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
+import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
 
@@ -20,6 +17,7 @@ public interface ComptabiliteDao {
      * @return
      */
     SequenceEcritureComptable getSequenceEcritureComptable(String pJournalCode, Integer pAnnee);
+
 
      /**
       *
@@ -40,7 +38,7 @@ public interface ComptabiliteDao {
      void deleteSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
 
 
-    void loadSequenceEcritureComptable(JournalComptable pJournalComptable);
+
     /**
      * Renvoie la liste des Comptes Comptables
      * @return {@link List}
@@ -80,6 +78,8 @@ public interface ComptabiliteDao {
      * @throws NotFoundException : Si l'écriture comptable n'est pas trouvée
      */
     EcritureComptable getEcritureComptableByRef(String pReference) throws NotFoundException;
+
+
 
     /**
      * Charge la liste des lignes d'écriture de l'écriture comptable {@code pEcritureComptable}

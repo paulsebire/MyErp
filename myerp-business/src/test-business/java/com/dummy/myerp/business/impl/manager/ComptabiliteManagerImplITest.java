@@ -1,13 +1,12 @@
 package com.dummy.myerp.business.impl.manager;
 
 import com.dummy.myerp.business.SpringRegistry;
-import com.dummy.myerp.business.contrat.BusinessProxy;
-import com.dummy.myerp.business.impl.BusinessProxyImpl;
 import com.dummy.myerp.business.impl.TransactionManager;
 import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
+import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,10 +15,7 @@ import org.springframework.transaction.TransactionStatus;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class ComptabiliteManagerImplITest {
 
@@ -29,73 +25,89 @@ public class ComptabiliteManagerImplITest {
     private ComptabiliteDaoImpl dao = ComptabiliteDaoImpl.getInstance();
     private TransactionManager trManager = TransactionManager.getInstance();
 
+    private List<CompteComptable> compteComptableList = new ArrayList<>();
+    private List<JournalComptable> journalComptableList= new ArrayList<>();
+    private JournalComptable journal;
+
+
     private Calendar calendar = Calendar.getInstance();
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     private Date dateAddReference;
     private Date dateRG6;
 
+    private LigneEcritureComptable createLigne(Integer pLigneId, String pLigneEcritureLibelle, Integer pCompteComptableNumero,String pCompteComptableLibelle, String pDebit, String pCredit) {
+
+        CompteComptable pCompteComptable =  ObjectUtils.defaultIfNull(
+                CompteComptable.getByNumero( compteComptableList, pCompteComptableNumero ),
+                new CompteComptable( pCompteComptableNumero,pCompteComptableLibelle ) );
+
+        BigDecimal vDebit = pDebit == null ?  null : new BigDecimal( pDebit );
+        BigDecimal vCredit = pCredit == null ? null : new BigDecimal( pCredit );
 
 
-    private LigneEcritureComptable createLigne(Integer pCompteComptableNumero,String vLibelle, String pComteComptableLibelle, String pDebit, String pCredit) {
-        BigDecimal vDebit = pDebit == null ?  BigDecimal.ZERO : new BigDecimal(pDebit);
-        BigDecimal vCredit = pCredit == null ? BigDecimal.ZERO : new BigDecimal(pCredit);
-        LigneEcritureComptable vRetour = new LigneEcritureComptable(new CompteComptable(pCompteComptableNumero,pComteComptableLibelle),
-                vLibelle,
-                vDebit, vCredit);
+        LigneEcritureComptable vRetour = new LigneEcritureComptable(pLigneId, pCompteComptable, pLigneEcritureLibelle,vDebit,vCredit );
         return vRetour;
     }
-
 
     @Before
     public void initAll() throws ParseException {
         SpringRegistry.init();
-        ComptabiliteManagerImpl.setTransactionManager(SpringRegistry.getTransactionManager());
-        ComptabiliteManagerImpl.setDaoProxy(SpringRegistry.getDaoProxy());
-        ComptabiliteManagerImpl.setBusinessProxy(SpringRegistry.getBusinessProxy());
+
+
+        compteComptableList = dao.getListCompteComptable();
+        journalComptableList = dao.getListJournalComptable();
 
         dateAddReference = formatter.parse("1900-01-01");
         dateRG6 = formatter.parse("2016-01-01");
         vEcriture = manager.getEcritureComptable();
+        journal = ObjectUtils.defaultIfNull(
+                JournalComptable.getByCode( journalComptableList, "AC" ),
+                new JournalComptable( "AC","Achat" ) );
 
     }
 
     @Test
     public void addReference() {
+
         calendar.setTime( dateAddReference );
 
-        vEcriture.setJournal( new JournalComptable("AC","Achat") );
+        vEcriture.setJournal( journal );
         vEcriture.setDate( dateAddReference );
         vEcriture.setLibelle("Nombre écriture valide : au moins 1  ligne de débit et 1 ligne de crédit");
-        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Facture c1","Compte 1", "10", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Facture c2","Compte 2",null, "10"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Facture c1",411,"Compte 1", "10", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Facture c2",401,"Compte 2",null, "10"));
 
         manager.addReference();
-        SequenceEcritureComptable pSeq = dao.getSequenceEcritureComptable("AC",calendar.get(Calendar.YEAR) );
-        Assert.assertEquals("AC-1900/00001",manager.setReference(pSeq) );
+        Assert.assertEquals(vEcriture.getReference() ,manager.setReference(dao.getSequenceEcritureComptable("AC",calendar.get(Calendar.YEAR) ) ) );
 
 
         manager.addReference( );
-        pSeq = dao.getSequenceEcritureComptable("AC",calendar.get(Calendar.YEAR) );
-        Assert.assertEquals("AC-1900/00002",manager.setReference( pSeq ) );
+        SequenceEcritureComptable pSeq = dao.getSequenceEcritureComptable("AC",calendar.get(Calendar.YEAR) );
+
+        Assert.assertEquals( vEcriture.getReference(), manager.setReference(pSeq) );
+        Assert.assertEquals("AC-1900/00002", manager.setReference(pSeq) );
 
         dao.deleteSequenceEcritureComptable( pSeq );
+        Assert.assertNull(  dao.getSequenceEcritureComptable("AC",calendar.get(Calendar.YEAR) ) );
     }
 
     @Test(expected = FunctionalException.class )
     public void checkEcritureComptableContextRG6_New() throws FunctionalException {
 
         EcritureComptable vEcriture = new EcritureComptable();
-        vEcriture.setJournal( new JournalComptable("AC","Achat") );
+        vEcriture.setJournal(journal );
         vEcriture.setReference("AC-2016/00011");
         vEcriture.setDate( dateRG6 );
         vEcriture.setLibelle("Nombre écriture valide : au moins 1  ligne de débit et 1 ligne de crédit");
-        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Facture c1","Compte 1", "10", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Facture c2","Compte 2",null, "10"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Facture c1",411,"Compte 1", "10", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Facture c2",401,"Compte 2",null, "10"));
 
         manager.checkEcritureComptable( vEcriture );
 
         vEcriture.setReference("AC-2016/00001");
         manager.checkEcritureComptable( vEcriture );
+
+
     }
 
     @Test(expected = FunctionalException.class )
@@ -125,8 +137,9 @@ public class ComptabiliteManagerImplITest {
         vEcriture.setJournal( new JournalComptable("AC","Achat") );
         vEcriture.setDate( date );
         vEcriture.setLibelle("Insertion nouvelle écriture");
-        vEcriture.getListLigneEcriture().add(this.createLigne(411,"Facture c1","Clients", "10", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(411, "Facture c2","Clients",null, "10"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Facture c1",411,"Compte 1", "10", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Facture c2",401,"Compte 2",null, "10"));
+
         manager.addReference();
 
         manager.insertEcritureComptable( vEcriture );
@@ -134,6 +147,9 @@ public class ComptabiliteManagerImplITest {
         EcritureComptable vECRef = dao.getEcritureComptableByRef(vEcriture.getReference());
 
         manager.deleteEcritureComptable( vECRef.getId() );
+
+        SequenceEcritureComptable pSeq = dao.getSequenceEcritureComptable("AC",calendar.get(Calendar.YEAR) );
+        dao.deleteSequenceEcritureComptable( pSeq );
 
         vEcriture.setReference("VE-2016/00004");
 
@@ -144,12 +160,12 @@ public class ComptabiliteManagerImplITest {
     @Test(expected = FunctionalException.class )
     public void updateEcritureComptable() throws FunctionalException, NotFoundException {
 
-        Date date = new Date();
-        vEcriture.setJournal( new JournalComptable("AC","Achat") );
-        vEcriture.setDate( date );
+        vEcriture.setJournal( journal );
+        vEcriture.setDate( new Date() );
         vEcriture.setLibelle("Insertion nouvelle écriture");
-        vEcriture.getListLigneEcriture().add(this.createLigne(411,"Facture c1","Clients", "10", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(411, "Facture c2","Clients",null, "10"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Facture c1",411,"Compte 1", "10", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Facture c2",401,"Compte 2",null, "10"));
+
         manager.addReference();
 
         manager.insertEcritureComptable( vEcriture );
@@ -161,6 +177,9 @@ public class ComptabiliteManagerImplITest {
         manager.updateEcritureComptable( vEcriture );
 
         manager.deleteEcritureComptable( vECRef.getId() );
+        SequenceEcritureComptable pSeq = dao.getSequenceEcritureComptable("AC",calendar.get(Calendar.YEAR) );
+        dao.deleteSequenceEcritureComptable( pSeq );
+
         vEcriture.setReference("VE-2016/00004");
         manager.updateEcritureComptable( vEcriture );
 
@@ -174,8 +193,9 @@ public class ComptabiliteManagerImplITest {
         vEcriture.setJournal( journalComptable );
         vEcriture.setDate( date );
         vEcriture.setLibelle("Insertion nouvelle écriture");
-        vEcriture.getListLigneEcriture().add(this.createLigne(411,"Facture c1","Clients", "10", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(411, "Facture c2","Clients",null, "10"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1,"Facture c1",411,"Compte 1", "10", null));
+        vEcriture.getListLigneEcriture().add(this.createLigne(2, "Facture c2",401,"Compte 2",null, "10"));
+
         manager.addReference();
 
         manager.insertEcritureComptable( vEcriture );
@@ -183,11 +203,10 @@ public class ComptabiliteManagerImplITest {
         EcritureComptable vECRef = dao.getEcritureComptableByRef(vEcriture.getReference());
 
         List<EcritureComptable> listEcritureComptable = manager.getListEcritureComptable();
-        Assert.assertTrue( listEcritureComptable.contains( vECRef ) );
-
+        Assert.assertNotNull( EcritureComptable.getById( listEcritureComptable,vECRef.getId() ) );
 
         List<CompteComptable> listCompteComptable = manager.getListCompteComptable();
-        Assert.assertTrue( listCompteComptable.contains( compteComptable ) );
+        Assert.assertNotNull(CompteComptable.getByNumero(listCompteComptable,compteComptable.getNumero() ) );
 
         boolean isCodeJournal = false;
         List<JournalComptable> listJournalComptable = manager.getListJournalComptable();
@@ -199,14 +218,13 @@ public class ComptabiliteManagerImplITest {
 
         Assert.assertTrue( isCodeJournal );
 
-
         manager.deleteEcritureComptable( vECRef.getId() );
 
         listEcritureComptable = manager.getListEcritureComptable();
-        Assert.assertFalse( listEcritureComptable.contains( vECRef ) );
+        Assert.assertNull( EcritureComptable.getById( listEcritureComptable,vECRef.getId() ) );
 
         listCompteComptable = manager.getListCompteComptable();
-        Assert.assertTrue( listCompteComptable.contains( compteComptable ) );
+        Assert.assertNotNull(CompteComptable.getByNumero(listCompteComptable,compteComptable.getNumero() ) );
 
         isCodeJournal = false;
         listJournalComptable = manager.getListJournalComptable();
@@ -218,7 +236,8 @@ public class ComptabiliteManagerImplITest {
 
         Assert.assertTrue( isCodeJournal );
 
-
+        SequenceEcritureComptable pSeq = dao.getSequenceEcritureComptable("AC",calendar.get(Calendar.YEAR) );
+        dao.deleteSequenceEcritureComptable( pSeq );
     }
 
     @Test
@@ -244,7 +263,5 @@ public class ComptabiliteManagerImplITest {
         }
 
     }
-
-
 
 }

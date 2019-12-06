@@ -26,11 +26,10 @@ public class CompteComptableDaoCache {
      * @return {@link CompteComptable} ou {@code null}
      */
     public CompteComptable getByNumero(Integer pNumero) {
-        if (listCompteComptable == null) {
+        if (listCompteComptable == null)
             listCompteComptable = ConsumerHelper.getDaoProxy().getComptabiliteDao().getListCompteComptable();
-        }
 
-        CompteComptable vRetour = CompteComptable.getByNumero(listCompteComptable, pNumero);
-        return vRetour;
+        return CompteComptable.getByNumero(listCompteComptable, pNumero);
+
     }
 }

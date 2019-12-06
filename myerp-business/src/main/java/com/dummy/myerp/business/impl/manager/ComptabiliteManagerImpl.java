@@ -13,7 +13,6 @@ import com.dummy.myerp.business.contrat.manager.ComptabiliteManager;
 import com.dummy.myerp.model.bean.comptabilite.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.TransactionStatus;
@@ -53,8 +52,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         return getDaoProxy().getComptabiliteDao().getListEcritureComptable();
     }
 
-
-
     @Override
     public void insertSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable) {
         getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable( sequenceEcritureComptable );
@@ -79,17 +76,15 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         Date date = ecritureComptable.getDate();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime( date );
-
-        String journalCode = ecritureComptable.getJournal().getCode();
         Integer annee = calendar.get(Calendar.YEAR );
 
-        SequenceEcritureComptable pSeq = getSequenceEcritureComptable( journalCode,annee);
+        SequenceEcritureComptable pSeq = getSequenceEcritureComptable( ecritureComptable.getJournal().getCode(),annee);
 
         if ( pSeq != null){
             pSeq.setDerniereValeur( pSeq.getDerniereValeur() + 1 );
             updateSequenceEcritureComptable( pSeq );
         }else{
-            pSeq = new SequenceEcritureComptable(journalCode,annee,1);
+            pSeq = new SequenceEcritureComptable(ecritureComptable.getJournal() ,annee,1);
             insertSequenceEcritureComptable( pSeq );
         }
 
@@ -101,10 +96,9 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * @return
      */
     public String setReference(SequenceEcritureComptable sequenceEcritureComptable){
-        String reference = sequenceEcritureComptable.getJournalCode() + "-";
+        String reference = sequenceEcritureComptable.getJournalComptable().getCode() + "-";
         reference += sequenceEcritureComptable.getAnnee()  + "/";
         reference +=String.format("%05d", sequenceEcritureComptable.getDerniereValeur() );
-
         return  reference;
     }
 
