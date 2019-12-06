@@ -1,6 +1,8 @@
 package com.dummy.myerp.business.impl.manager;
 
 import com.dummy.myerp.business.SpringRegistry;
+import com.dummy.myerp.business.contrat.manager.ComptabiliteManager;
+import com.dummy.myerp.business.impl.BusinessProxyImpl;
 import com.dummy.myerp.business.impl.TransactionManager;
 import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.*;
@@ -18,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ComptabiliteManagerImplITest {
+
 
     private ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
 
