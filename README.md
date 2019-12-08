@@ -65,7 +65,7 @@ Pour le taux de coverage :
 
 
 ## Correctifs principaux
-*   Absent de configuration dataSource
+*   Absence de la configuration de la dataSource
 *   Dans l'entité `EcritureComptable`, correction des méthodes `getTotalCredit()` && `getTotalDebit()` sur le format de retour 2 chiffres après la virgule
 *   Dans l'entité `EcritureComptable`, correction de la méthode `getTotalCredit()` qui accédait à la méthode `getDebit()` au lieu de `getCredit()`
 *   Dans l'entité `EcritureComptable`, correction de l'expression régulière qui était erronée
