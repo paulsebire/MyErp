@@ -62,6 +62,7 @@ public class ComptabiliteDaoImplTest {
         Assert.assertTrue( AbstractDbConsumer.isDataSourceConfig(null,vMapDataSource,null) );
 
     }
+
     @Test(expected = UnsatisfiedLinkError.class )
     public void isDataSourceIsNull()throws UnsatisfiedLinkError{
         DriverManagerDataSource ds = new DriverManagerDataSource();

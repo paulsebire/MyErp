@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+                        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd">
 
 
     <!-- ====================   Consumer   ==================== -->
@@ -46,12 +49,14 @@
     <!--bean id="dataSourceMYERP" class="com.dummy.myerp.technical.util.spring.NullFactoryBean">
         <constructor-arg value="javax.sql.DataSource"/>
     </bean-->
+    <!-- ==================== External datasource properties file ==================== -->
+    <context:property-placeholder location="classpath:database.properties"/>
 
     <bean id="dataSourceMYERP" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver" />
-        <property name="url" value="jdbc:postgresql://192.168.99.101:9032/db_myerp" />
-        <property name="username" value="usr_myerp" />
-        <property name="password" value="myerp" />
+        <property name="driverClassName" value="${myerp.datasource.driver}" />
+        <property name="url" value="${myerp.datasource.url}" />
+        <property name="username" value="${myerp.datasource.username}" />
+        <property name="password" value="${myerp.datasource.password}" />
     </bean>
 
 
