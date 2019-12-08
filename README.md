@@ -62,6 +62,7 @@ Pour le taux de coverage :
         - myerp-business/target/site/jacoco/index.html
         - myerp-consumer/target/site/jacoco/index.html
         - myerp-model/target/site/jacoco/index.html
+    - soit avec jenkins
 
 
 ## Correctifs principaux
