@@ -18,7 +18,7 @@ Dans le fichier /docker/dev/docker-compose.yml modifier l'adresse IP en fonction
 
 Depuis votre environnement docker
  
-    1) se placer dans le répertoire du conteneur : 
+    1) se placer dans le répertoire du conteneur à assembler : 
         -  cd /docker/dev
         
     2) Charger le conteneur
