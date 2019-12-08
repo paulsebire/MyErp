@@ -19,6 +19,7 @@ import lombok.*;
  */
 @NoArgsConstructor
 @Getter
+@Setter
 @ToString
 public class EcritureComptable {
 
@@ -49,27 +50,6 @@ public class EcritureComptable {
     @Size(min = 2)
     private final List<LigneEcritureComptable> listLigneEcriture = new ArrayList<>();
 
-    // ==================== Getter / Setter ====================
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setJournal(JournalComptable journal) {
-        this.journal = journal;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
 
     /**
      * Calcul et renvoie le total des montants au débit des lignes d'écriture

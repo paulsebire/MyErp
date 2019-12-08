@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
  */
 @NoArgsConstructor
 @Getter
+@Setter
 public class JournalComptable {
 
     // ==================== Attributs ====================
@@ -30,16 +31,6 @@ public class JournalComptable {
 
     @Valid
     private final List<SequenceEcritureComptable> listSequenceEcriture  = new ArrayList<>();
-
-    // ==================== Getter / Setter ====================
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
 
 
     // ==================== Constructeur ====================

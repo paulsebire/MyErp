@@ -15,6 +15,7 @@ import lombok.*;
  */
 @NoArgsConstructor
 @Getter
+@Setter
 @ToString
 public  class LigneEcritureComptable {
 
@@ -39,30 +40,6 @@ public  class LigneEcritureComptable {
     /** The Credit. */
     @MontantComptable
     private BigDecimal credit;
-    // ==================== Getter / Setter ====================
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setEcritureComptable(EcritureComptable ecritureComptable) {
-        this.ecritureComptable = ecritureComptable;
-    }
-
-    public void setCompteComptable(CompteComptable compteComptable) {
-        this.compteComptable = compteComptable;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public void setDebit(BigDecimal debit) {
-        this.debit = debit;
-    }
-
-    public void setCredit(BigDecimal credit) {
-        this.credit = credit;
-    }
 
 // ==================== Constructeur ====================
     /**

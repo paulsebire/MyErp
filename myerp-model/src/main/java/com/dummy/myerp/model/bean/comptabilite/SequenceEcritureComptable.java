@@ -12,6 +12,7 @@ import java.util.Objects;
  */
 @NoArgsConstructor
 @Getter
+@Setter
 public class SequenceEcritureComptable {
 
     // ==================== Attributs ====================
@@ -34,20 +35,6 @@ public class SequenceEcritureComptable {
         this.derniereValeur = derniereValeur;
     }
 
-
-// ==================== Getter / Setter ====================
-
-    public void setJournalComptable(JournalComptable journalComptable) {
-        this.journalComptable = journalComptable;
-    }
-
-    public void setAnnee(Integer annee) {
-        this.annee = annee;
-    }
-
-    public void setDerniereValeur(Integer derniereValeur) {
-        this.derniereValeur = derniereValeur;
-    }
 
     // ==================== Méthodes STATIC ====================
     /**

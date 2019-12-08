@@ -16,6 +16,7 @@ import javax.validation.constraints.Size;
  */
 @NoArgsConstructor
 @Getter
+@Setter
 @ToString
 public class CompteComptable {
     // ==================== Attributs ====================
@@ -30,15 +31,6 @@ public class CompteComptable {
 
     @Valid
     private final List<LigneEcritureComptable> ligneEcritureComptableList = new ArrayList<>();
-
-    // ==================== Getter / Setter ====================
-    public void setNumero(Integer numero) {
-        this.numero = numero;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
 
     // ==================== Constructeur ====================
 
