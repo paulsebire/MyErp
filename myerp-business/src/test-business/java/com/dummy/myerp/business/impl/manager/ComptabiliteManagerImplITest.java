@@ -9,6 +9,7 @@ import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
 import org.apache.commons.lang3.ObjectUtils;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +69,10 @@ public class ComptabiliteManagerImplITest {
                 new JournalComptable( "AC","Achat" ) );
 
     }
-
+    @After
+    public void initData(){
+        dao.initData();
+    }
     @Test
     public void addReference() {
 

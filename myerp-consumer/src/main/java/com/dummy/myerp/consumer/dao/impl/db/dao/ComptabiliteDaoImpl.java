@@ -49,6 +49,20 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
 
     // ==================== Méthodes ====================
 
+    // ==================== Reinitialisation de la base de donnée ====================
+    private static  String SQLinitData;
+
+    public void setSQLinitData(String pSQLinitData) {
+       SQLinitData = pSQLinitData;
+    }
+
+    public void initData(){
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
+        vJdbcTemplate.update(SQLinitData, vSqlParams);
+    }
+
+
     // ==================== SequenceEcritureComptable - GET ====================
 
     private static String SQLgetSequenceEcritureComptable;

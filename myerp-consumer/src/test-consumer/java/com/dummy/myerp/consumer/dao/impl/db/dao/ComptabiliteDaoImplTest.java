@@ -7,6 +7,7 @@ import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.NotFoundException;
 import org.apache.commons.lang3.ObjectUtils;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +44,11 @@ public class ComptabiliteDaoImplTest {
         SpringRegistry.init();
         compteComptableList = dao.getListCompteComptable();
         journalComptableList = dao.getListJournalComptable();
+    }
+
+    @After
+    public void initData(){
+        dao.initData();
     }
 
     @Test
@@ -174,6 +180,7 @@ public class ComptabiliteDaoImplTest {
         dao.getEcritureComptableByRef( vECRef.getReference() );
 
     }
+
 
 
 
